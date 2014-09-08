@@ -12,8 +12,8 @@ Author@R: c(
 	)
 Author: Matthew Furia <matt.furia@sagebase.org>
 Maintainer: Bruce Hoff <bruce.hoff@sagebase.org>
-Depends: methods, R (>= 2.15)
-Imports: RJSONIO (>= 1.0-1),RCurl (> 1.95-3),tools,digest,utils
+Depends: methods,R(>= 2.15),utils
+Imports: RJSONIO(>= 1.0-1),RCurl(> 1.95-3),tools,digest,utils
 Suggests: RUnit, rGithubClient
 Additional_repositories: https://github.com/Sage-Bionetworks/rGithubClient
 SystemRequirements: zip
