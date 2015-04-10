@@ -13,8 +13,8 @@ setMethod(
     } else {
       wasExecuted<-otherParams$wasExecuted
     }
-	usedName <- propertyValue(entity, "name")
-	if (is.null(usedName)) usedName<-propertyValue(entity, "id")
+	usedName <- propertyValue(listEntry, "name")
+	if (is.null(usedName)) usedName<-propertyValue(listEntry, "id")
     list(reference=getReference(listEntry), name=usedName, wasExecuted=wasExecuted, concreteType="org.sagebionetworks.repo.model.provenance.UsedEntity")
   }
 )
@@ -60,7 +60,7 @@ setMethod(
       if (is.null(listEntry$wasExecuted)) stop("'wasExecuted' required.")
       if (is.null(listEntry$concreteType)) listEntry$concreteType<-"org.sagebionetworks.repo.model.provenance.UsedURL"
 			if (is.null(listEntry$name)) listEntry$name<-listEntry$url
-	  listEntry
+	  	listEntry
     } else if (!is.null(listEntry$targetId)) {
       # then the arg is itself a reference
       otherParams<-list(...)
