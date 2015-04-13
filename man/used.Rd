@@ -1,30 +1,28 @@
-\name{used}
-\alias{used}
+\name{Used}
+\alias{Used}
+\docType{methods}
 \title{
-	\code{used}
+Used Constructor
 }
-\description{
-Function for getting the entities used to generate an Entity or Activity
-}
-\usage{
-used(entity)
-used(activity)
-activity$used
-}
+\description{Constructor for Used}
+\usage{Used(wasExecuted, concreteType)}
 \arguments{
-  \item{entity}{
-  The entity/activity of interest.
+  \item{wasExecuted}{
+  The enclosed entity was used and also executed in the Activity (logical)
+  }
+  \item{concreteType}{
+   (character)
+  }
 }
+\section{Slots}{
+  \describe{
+    \item{\code{wasExecuted}}{
+    The enclosed entity was used and also executed in the Activity (logical)
+    }
+    \item{\code{concreteType}}{
+     (character)
+    }
+  }
 }
-\details{
-This method returns information already in the session.  There is no server interaction.
+\seealso{
 }
-\value{
-A list of entities involved in generating the given entity/activity, but not "executed". (See also \code{executed(entity)}.)
-}
-
-\author{
-Bruce Hoff
-}
-
-

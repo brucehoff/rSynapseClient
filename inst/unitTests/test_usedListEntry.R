@@ -5,17 +5,15 @@
 
 
 unitTestUsedEntityListEntry<-function() {
-	usedEntry<-synapseClient:::usedListEntry(list(entity="syn123456", wasExecuted=T))
-	checkTrue(usedEntry$wasExecuted)
-	checkEquals("org.sagebionetworks.repo.model.provenance.UsedEntity", usedEntry$concreteType)
+	usedEntry<-synapseClient:::usedListEntry(listEntry="syn123456", wasExecuted=T)
+	checkTrue(is(usedEntry, "UsedEntity"))
 	checkEquals("syn123456", usedEntry$reference$targetId)
-	checkEquals("syn123456", usedEntry$name)
 }
 
 unitTestUsedURLListEntry<-function() {
-	usedEntry<-synapseClient:::usedListEntry(list(url="http://foo.bar", wasExecuted=F))
+	usedEntry<-synapseClient:::usedListEntry(listEntry="http://foo.bar", wasExecuted=F)
 	checkTrue(!usedEntry$wasExecuted)
-	checkEquals("org.sagebionetworks.repo.model.provenance.UsedURL", usedEntry$concreteType)
+	checkTrue(is(usedEntry, "UsedURL"))
 	checkEquals("http://foo.bar", usedEntry$url)
 	checkEquals("http://foo.bar", usedEntry$name)
 }

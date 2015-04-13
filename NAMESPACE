@@ -37,7 +37,10 @@ export(
   "synCreateEntityACL",
   "synGetEntityACL",
   "synUpdateEntityACL",
-  "synDeleteEntityACL"
+  "synDeleteEntityACL",
+  "Reference",
+  "UsedEntity",
+  "UsedURL"
 )
 
 ## S3 utility methods

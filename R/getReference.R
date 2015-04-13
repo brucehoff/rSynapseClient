@@ -10,9 +10,9 @@ setMethod(
   definition = function(entity) {
     versionNumber <- propertyValue(entity, "versionNumber")
     if (is.null(versionNumber)) {
-      list(targetId=propertyValue(entity, "id"))
+      Reference(targetId=propertyValue(entity, "id"))
     } else {
-      list(targetId=propertyValue(entity, "id"), targetVersionNumber=versionNumber)
+			Reference(targetId=propertyValue(entity, "id"), targetVersionNumber=versionNumber)
     }
   }
 )
@@ -21,7 +21,7 @@ setMethod(
   f="getReference",
   signature = signature("character"),
   definition = function(entity) {
-    list(targetId=entity)
+		Reference(targetId=entity)
   }
 )
 

@@ -1,7 +1,7 @@
 #
-# Methods for creating a UsedEntity from an Entity, a URL or a list having an Entity with a boolean 'wasExecuted'
+# Methods for creating a UsedEntity from an Entity or a URL
 # The Entity may either be a SynapseEntity object, an entity ID, 
-# or a "reference" (of the form list(targetId="syn123", targetVersionNumber=1) )
+# or a Reference
 #
 setMethod(
   f="usedListEntry",
@@ -13,9 +13,7 @@ setMethod(
     } else {
       wasExecuted<-otherParams$wasExecuted
     }
-	usedName <- propertyValue(listEntry, "name")
-	if (is.null(usedName)) usedName<-propertyValue(listEntry, "id")
-    list(reference=getReference(listEntry), name=usedName, wasExecuted=wasExecuted, concreteType="org.sagebionetworks.repo.model.provenance.UsedEntity")
+    UsedEntity(reference=getReference(listEntry), wasExecuted=wasExecuted)
   }
 )
 
@@ -30,56 +28,52 @@ setMethod(
       wasExecuted<-otherParams$wasExecuted
     }
     if (isSynapseId(listEntry)) {
-      list(reference=getReference(listEntry), name=listEntry, wasExecuted=wasExecuted, concreteType="org.sagebionetworks.repo.model.provenance.UsedEntity")
+			UsedEntity(reference=getReference(listEntry), wasExecuted=wasExecuted)
     } else {
       # must be a URL
-      list(url=listEntry, name=listEntry, wasExecuted=wasExecuted, concreteType="org.sagebionetworks.repo.model.provenance.UsedURL")
+			UsedURL(url=listEntry, name=listEntry, wasExecuted=wasExecuted)
     }
   }
 )
 
 setMethod(
-  f="usedListEntry",
-  signature = signature("list"),
-  definition = function(listEntry, ...) {
-    if (!is.null(listEntry$reference)) {
-      # the list is itself a UsedEntity
-      if (is.null(listEntry$wasExecuted)) {
-        otherParams<-list(...)
-        if (is.null(otherParams$wasExecuted)) {
-          listEntry$wasExecuted=F
-        } else {
-          listEntry$wasExecuted<-otherParams$wasExecuted
-        }
-      }
-      if (is.null(listEntry$concreteType)) listEntry$concreteType<-"org.sagebionetworks.repo.model.provenance.UsedEntity"
-			if (is.null(listEntry$name)) listEntry$name<-listEntry$reference$targetId
-			listEntry
-    } else if (!is.null(listEntry$url)) {
-      # the list is itself a UsedURL
-      if (is.null(listEntry$wasExecuted)) stop("'wasExecuted' required.")
-      if (is.null(listEntry$concreteType)) listEntry$concreteType<-"org.sagebionetworks.repo.model.provenance.UsedURL"
-			if (is.null(listEntry$name)) listEntry$name<-listEntry$url
-	  	listEntry
-    } else if (!is.null(listEntry$targetId)) {
-      # then the arg is itself a reference
-      otherParams<-list(...)
-      if (is.null(otherParams$wasExecuted)) {
-        wasExecuted=F
-      } else {
-        wasExecuted<-otherParams$wasExecuted
-      }
-      list(reference=listEntry, name=listEntry$targetId, wasExecuted=wasExecuted, concreteType="org.sagebionetworks.repo.model.provenance.UsedEntity")
-    } else if (!is.null(listEntry$entity)) {
-      # get the reference and the 'executed' 
-      usedEntity<-listEntry$entity
-      executed<-listEntry$wasExecuted
-      if (is.null(executed)) stop ("Executed required.")
-			reference<-getReference(usedEntity)
-      list(reference=reference, name=reference$targetId, wasExecuted=executed, concreteType="org.sagebionetworks.repo.model.provenance.UsedEntity")
-    } else {
-      stop ("Entity, ID or URL required.")
-    }
-  }
+	f="usedListEntry",
+	signature = signature("UsedEntity"),
+	definition = function(listEntry, ...) {
+		if (is.null(listEntry$wasExecuted)) {
+			otherParams<-list(...)
+			if (is.null(otherParams$wasExecuted)) {
+				listEntry$wasExecuted=F
+			} else {
+				listEntry$wasExecuted<-otherParams$wasExecuted
+			}
+		}
+		listEntry
+	}
+)
+
+setMethod(
+	f="usedListEntry",
+	signature = signature("UsedURL"),
+	definition = function(listEntry, ...) {
+		if (is.null(listEntry$wasExecuted)) stop("'wasExecuted' required.")
+		if (is.null(listEntry$name)) listEntry$name<-listEntry$url
+		listEntry
+	}
+)
+
+
+setMethod(
+	f="usedListEntry",
+	signature = signature("Reference"),
+	definition = function(listEntry, ...) {
+		otherParams<-list(...)
+		if (is.null(otherParams$wasExecuted)) {
+			wasExecuted=F
+		} else {
+			wasExecuted<-otherParams$wasExecuted
+		}
+		UsedEntity(reference=listEntry, wasExecuted=wasExecuted)
+	}
 )
 

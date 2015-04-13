@@ -25,6 +25,9 @@ man/ExternalUploadDestination.Rd
 man/S3UploadDestination.Rd
 man/UploadDestination.Rd
 man/SubmissionQuota.Rd
+man/Reference.Rd
+man/UsedEntity.Rd
+man/UsedURL.Rd
 inst/resources/Register.json
 inst/resources/schema
 
