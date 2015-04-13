@@ -1,6 +1,6 @@
 className	schemaName	genDoc
 Reference	org.sagebionetworks.repo.model.Reference	true
-Used	org.sagebionetworks.repo.model.provenance.Used	true
+Used	org.sagebionetworks.repo.model.provenance.Used	false
 UsedEntity	org.sagebionetworks.repo.model.provenance.UsedEntity	true
 UsedURL	org.sagebionetworks.repo.model.provenance.UsedURL	true
 AttachmentData	org.sagebionetworks.repo.model.attachment.AttachmentData	false
