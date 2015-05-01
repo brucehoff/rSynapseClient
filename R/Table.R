@@ -368,10 +368,10 @@ trackProgress<-function(checkCompleteUri, verbose=TRUE) {
     checkResultAsList<-synapseGet(uri=checkCompleteUri, curlHandle=curlHandle, checkHttpStatus=FALSE)
     statusCode<-getStatusCode(curlHandle)
     if (statusCode==202) {
-      if (is.null(checkResultAsList$progressCurrent)) {
-        # remove when PLFM-3008 is fixed
-        checkResultAsList$progressCurrent<-as.integer(0)
-      }
+#      if (is.null(checkResultAsList$progressCurrent)) {
+#        # remove when PLFM-3008 is fixed
+#        checkResultAsList$progressCurrent<-as.integer(0)
+#      }
       jobStatus<-createS4ObjectFromList(checkResultAsList, "AsynchronousJobStatus")
       asyncJobState<-jobStatus@jobState # PROCESSING, FAILED, or COMPLETE
       if (asyncJobState!="PROCESSING") break
