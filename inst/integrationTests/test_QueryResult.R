@@ -32,7 +32,7 @@ integrationTestQueryResult_Fetch <- function() {
 	while (Sys.time()-startTime<as.difftime("00:01:00")) { # wait for up to one minute
   	qr <- synapseClient:::QueryResult$new(sprintf("select id, name, parentId from entity where parentId=='%s'", project), blockSize=5)
   	df <- qr$fetch()
-		if (nrow(df)>0) break
+		if (nrow(df)==5) break
 		Sys.sleep(5)
 	}
 	
@@ -59,7 +59,7 @@ integrationTestQueryResult_Collect <- function() {
 	while (Sys.time()-startTime<as.difftime("00:01:00")) { # wait for up to one minute
 		qr <- synapseClient:::QueryResult$new(sprintf("select id, name, parentId from entity where parentId=='%s'", project), blockSize=3)
 		df <- qr$collect()
-		if (nrow(df)>0) break
+		if (nrow(df)==3) break
 		Sys.sleep(5)
 	}
 	
@@ -90,7 +90,7 @@ integrationTestQueryResult_CollectAll <- function() {
 		qr <- synapseClient:::QueryResult$new(sprintf("select id, name, parentId from entity where parentId=='%s' LIMIT 10", project), blockSize=7)
 		qr$collect()
 		df <- qr$collectAll()
-		if (nrow(df)>0) break
+		if (nrow(df)==10) break
 		Sys.sleep(5)
 	}
 	
