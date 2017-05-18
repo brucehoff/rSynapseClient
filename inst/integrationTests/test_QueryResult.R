@@ -28,9 +28,14 @@ integrationTestQueryResult_Fetch <- function() {
   folder <- Folder(parentId=project)
   lapply(1:10, function(i) createEntity(folder))
 
-	Sys.sleep(30)
-  qr <- synapseClient:::QueryResult$new(sprintf("select id, name, parentId from entity where parentId=='%s'", project), blockSize=5)
-  df <- qr$fetch()
+	startTime<-Sys.time()
+	while (Sys.time()-startTime<as.difftime("00:01:00")) { # wait for up to one minute
+  	qr <- synapseClient:::QueryResult$new(sprintf("select id, name, parentId from entity where parentId=='%s'", project), blockSize=5)
+  	df <- qr$fetch()
+		if (nrow(df)>0) break
+		Sys.sleep(5)
+	}
+	
   checkEquals(nrow(df),5)
   checkEquals(ncol(df),3)
   df <- qr$fetch()
@@ -50,8 +55,14 @@ integrationTestQueryResult_Collect <- function() {
   folder <- Folder(parentId=project)
   lapply(1:10, function(i) createEntity(folder))
 
-  qr <- synapseClient:::QueryResult$new(sprintf("select id, name, parentId from entity where parentId=='%s'", project), blockSize=3)
-  df <- qr$collect()
+	startTime<-Sys.time()
+	while (Sys.time()-startTime<as.difftime("00:01:00")) { # wait for up to one minute
+		qr <- synapseClient:::QueryResult$new(sprintf("select id, name, parentId from entity where parentId=='%s'", project), blockSize=3)
+		df <- qr$collect()
+		if (nrow(df)>0) break
+		Sys.sleep(5)
+	}
+	
   checkEquals(nrow(df),3)
   checkEquals(ncol(df),3)
   df <- qr$collect()
@@ -72,10 +83,17 @@ integrationTestQueryResult_CollectAll <- function() {
   ## add some children
   folder <- Folder(parentId=project)
   lapply(1:10, function(i) createEntity(folder))
-
-  qr <- synapseClient:::QueryResult$new(sprintf("select id, name, parentId from entity where parentId=='%s' LIMIT 10", project), blockSize=7)
-  qr$collect()
-  df <- qr$collectAll()
+	
+	
+	startTime<-Sys.time()
+	while (Sys.time()-startTime<as.difftime("00:01:00")) { # wait for up to one minute
+		qr <- synapseClient:::QueryResult$new(sprintf("select id, name, parentId from entity where parentId=='%s' LIMIT 10", project), blockSize=7)
+		qr$collect()
+		df <- qr$collectAll()
+		if (nrow(df)>0) break
+		Sys.sleep(5)
+	}
+	
   checkEquals(nrow(df), 10)
 }
 

@@ -69,6 +69,7 @@ integrationTestUpdateProvenance <- function() {
   # create a Project
   project <- synapseClient:::.getCache("testProject")
   checkTrue(!is.null(project))
+  Sys.sleep(30) # Since the query service is now 'eventually consistent' we have to wait a bit for the original file to appear
   updateProvenanceIntern(project)
 }
 
@@ -824,7 +825,7 @@ integrationTestNonFile<-function() {
   # verify that updated value was persisted
   checkEquals("value2", synapseClient:::synAnnotGetMethod(retrievedFolder, "annot"))
   
-  
+  Sys.sleep(30) # Since the query service is now 'eventually consistent' we have to wait a bit for the original file to appear
   # test createORUpdate=T
   folder<-Folder(name="test folder", parentId=propertyValue(project, "id"))
   folder<-synapseClient:::synAnnotSetMethod(folder, "annot", "value3")
@@ -1071,6 +1072,8 @@ integrationTestUpdateExternalLink<-function() {
   originalUrl <- "https://github.com/brian-bot/rGithubClient/blob/d3960fdbb8b1a4ef6990d90283d6ec474e424d5d/R/view.R"
   f <- synStore(File(path=originalUrl, parentId=pid, synapseStore=FALSE))
   checkEquals(originalUrl, f@fileHandle$externalURL)
+  
+  Sys.sleep(30) # Since the query service is now 'eventually consistent' we have to wait a bit for the original file to appear
   
   newUrl <- "https://github.com/brian-bot/rGithubClient/blob/ca29bba76e8fcae8c9a206d8ba760fe951e442ab/R/view.R"
   f <- synStore(File(path=newUrl, parentId=pid, synapseStore=FALSE))  
