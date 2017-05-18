@@ -394,6 +394,7 @@ createOrUpdateIntern<-function(project) {
   filePath2<- createFile()
   file2<-File(filePath2, name=name, parentId=pid)
   # since createOrUpdate=T is the default, this should update 'file' rather than create a new one
+  Sys.sleep(30) # Since the query service is now 'eventually consistent' we have to wait a bit for the original file to appear
   file2<-synStore(file2)
   checkEquals(propertyValue(file, "id"), propertyValue(file2, "id"))
   checkEquals(2, propertyValue(file2, "versionNumber")) # this is the test for SYNR-429
