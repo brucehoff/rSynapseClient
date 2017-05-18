@@ -29,12 +29,13 @@ integrationTestQueryResult_Fetch <- function() {
   lapply(1:10, function(i) createEntity(folder))
 
 	startTime<-Sys.time()
-	while (Sys.time()-startTime<as.difftime("00:01:00")) { # wait for up to one minute
+	while (Sys.time()-startTime<as.difftime("00:05:00")) { # wait for up to five minutes
   	qr <- synapseClient:::QueryResult$new(sprintf("select id, name, parentId from entity where parentId=='%s'", project), blockSize=5)
   	df <- qr$fetch()
 		if (nrow(df)==5) break
 		Sys.sleep(5)
 	}
+	message("Waited ", difftime(Sys.time(), startTime, units="mins"), " minutes for query results.")
 	
   checkEquals(nrow(df),5)
   checkEquals(ncol(df),3)
@@ -56,12 +57,13 @@ integrationTestQueryResult_Collect <- function() {
   lapply(1:10, function(i) createEntity(folder))
 
 	startTime<-Sys.time()
-	while (Sys.time()-startTime<as.difftime("00:01:00")) { # wait for up to one minute
+	while (Sys.time()-startTime<as.difftime("00:05:00")) { # wait for up to five minutes
 		qr <- synapseClient:::QueryResult$new(sprintf("select id, name, parentId from entity where parentId=='%s'", project), blockSize=3)
 		df <- qr$collect()
 		if (nrow(df)==3) break
 		Sys.sleep(5)
 	}
+	message("Waited ", difftime(Sys.time(), startTime, units="mins"), " minutes for query results.")
 	
   checkEquals(nrow(df),3)
   checkEquals(ncol(df),3)
@@ -86,13 +88,14 @@ integrationTestQueryResult_CollectAll <- function() {
 	
 	
 	startTime<-Sys.time()
-	while (Sys.time()-startTime<as.difftime("00:01:00")) { # wait for up to one minute
+	while (Sys.time()-startTime<as.difftime("00:05:00")) { # wait for up to five minutes
 		qr <- synapseClient:::QueryResult$new(sprintf("select id, name, parentId from entity where parentId=='%s' LIMIT 10", project), blockSize=7)
 		qr$collect()
 		df <- qr$collectAll()
 		if (nrow(df)==10) break
 		Sys.sleep(5)
 	}
+	message("Waited ", difftime(Sys.time(), startTime, units="mins"), " minutes for query results.")
 	
   checkEquals(nrow(df), 10)
 }
